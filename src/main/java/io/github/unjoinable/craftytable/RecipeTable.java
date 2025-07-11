@@ -62,25 +62,15 @@ public class RecipeTable {
         RecipeResult result;
         long shapelessHash = grid.normalizedHash();
         result = shapelessRecipes.get(shapelessHash);
-        if (result != null) {
-            log.info("SHAPELESS RESUTL");
-            return result;
-        }
+        if (result != null) return result;
 
         long shapedHash = grid.hash();
         result = shapedRecipes.get(shapedHash);
-        if (result != null) {
-            log.info("SHAPED RESU:T");
-            return result;
-        }
+        if (result != null) return result;
 
         for (TaggedRecipe recipe : taggedRecipe) {
-            if (recipe.matches(grid.getData())) {
-                System.out.println("WTF");
-                return recipe.result();
-            }
+            if (recipe.matches(grid.getData()))  return recipe.result();
         }
-        System.out.println("FALL BACK OR IDK");
         return null;
     }
 }
