@@ -1,12 +1,8 @@
 package io.github.unjoinable.craftytable.recipe.impl;
 
-import io.github.unjoinable.craftytable.GridArrangements;
-import io.github.unjoinable.craftytable.recipe.traits.FastRecipe;
 import io.github.unjoinable.craftytable.recipe.RecipeResult;
+import io.github.unjoinable.craftytable.recipe.traits.FastRecipe;
 import io.github.unjoinable.craftytable.utils.CraftingGrid;
-import net.minestom.server.item.Material;
-
-import static io.github.unjoinable.craftytable.GridArrangements.*;
 
 /**
  * High-performance shaped crafting recipe implementation that supports pattern matching
@@ -30,11 +26,10 @@ public final class ShapedRecipe implements FastRecipe {
      */
     public ShapedRecipe(CraftingGrid grid, RecipeResult result) {
         this.result = result;
-        this.encoded = GridArrangements.getOrientationHashes(grid.getData(), grid.getSize(), Material.class);
-               // grid.getAllOrientations()
-               // .stream()
-               // .mapToLong(CraftingGrid::hash)
-               // .toArray();
+        this.encoded = grid.getAllOrientations()
+                .stream()
+                .mapToLong(CraftingGrid::hash)
+                .toArray();
     }
 
     /**
