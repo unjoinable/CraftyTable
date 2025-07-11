@@ -10,8 +10,6 @@ import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -20,7 +18,6 @@ import java.util.List;
  * Supports 3x3 crafting grids, handles recipe normalization and deduplication.
  */
 public class RecipeTable {
-    private static final Logger log = LoggerFactory.getLogger(RecipeTable.class);
     private final Long2ObjectMap<RecipeResult> shapedRecipes;
     private final Long2ObjectMap<RecipeResult> shapelessRecipes;
     private final ObjectArrayList<TaggedRecipe> taggedRecipe;
@@ -69,7 +66,10 @@ public class RecipeTable {
         if (result != null) return result;
 
         for (TaggedRecipe recipe : taggedRecipe) {
-            if (recipe.matches(grid.getData()))  return recipe.result();
+            if (recipe.matches(grid.getData())) {
+                this.shapedRecipes.put(grid.hash(), recipe.result()); // Perhaps cache this to reduce computing
+                return recipe.result();
+            }
         }
         return null;
     }

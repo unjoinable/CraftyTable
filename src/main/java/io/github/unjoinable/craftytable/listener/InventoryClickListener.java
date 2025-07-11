@@ -32,16 +32,23 @@ public class InventoryClickListener implements EventListener<InventoryClickEvent
 
 
         CraftingGrid grid = new CraftingGrid(3, matArray);
+
+        long startTime = System.nanoTime();
         RecipeResult result = CraftyTable.RECIPE_TABLE.lookup(grid);
+        long endTime = System.nanoTime();
+
+        long duration = endTime - startTime;
 
         if (result == null) {
             inv.setItemStack(0, ItemStack.AIR);
             inv.update();
+            System.out.println("Time to compute failed recipe: " + duration + " nanoseconds");
             return Result.INVALID;
         }
 
         inv.setItemStack(0, result.itemStack());
         inv.update();
+        System.out.println("Time to compute successful recipe: " + duration + " nanoseconds");
         return Result.SUCCESS;
     }
 }
